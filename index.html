@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Validação de Visita ACS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<h3>Validando localização...</h3>
+<p id="status">Aguarde...</p>
+
+<script>
+
+function redirecionar(lat, lon) {
+
+    var coordenadas = lat + ", " + lon;
+
+    var url = "https://form.jotform.com/260504743750050"
+        + "?locationCoordinates=" + encodeURIComponent(coordenadas);
+
+    window.location.href = url;
+}
+
+if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+        redirecionar(position.coords.latitude, position.coords.longitude);
+    }, function() {
+        document.getElementById("status").innerHTML =
+            "Não foi possível obter localização.";
+    });
+} else {
+    document.getElementById("status").innerHTML =
+        "Geolocalização não suportada.";
+}
+</script>
+
+</body>
+</html>
