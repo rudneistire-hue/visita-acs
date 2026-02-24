@@ -6,9 +6,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
+
+<h3>Validando localização...</h3>
+<p id="status">Aguarde...</p>
+
 <script>
-navigator.geolocation.getCurrentPosition(function(position) {
-    
+navigator.geolocation.getCurrentPosition(
+function(position) {
+
     var lat = position.coords.latitude;
     var lon = position.coords.longitude;
     var coordenadas = lat + "," + lon;
@@ -21,17 +26,11 @@ navigator.geolocation.getCurrentPosition(function(position) {
         var rua = "";
 
         if (data.address) {
-            if (data.address.road) {
-                rua = data.address.road;
-            } else if (data.address.residential) {
-                rua = data.address.residential;
-            } else if (data.address.pedestrian) {
-                rua = data.address.pedestrian;
-            } else if (data.address.suburb) {
-                rua = data.address.suburb;
-            } else {
-                rua = data.display_name;
-            }
+            rua = data.address.road 
+                || data.address.residential 
+                || data.address.pedestrian 
+                || data.address.suburb 
+                || data.display_name;
         } else {
             rua = "Endereco nao identificado";
         }
@@ -43,34 +42,16 @@ navigator.geolocation.getCurrentPosition(function(position) {
         window.location.href = url;
     });
 
-});
-</script>
-<h3>Validando localização...</h3>
-<p id="status">Aguarde...</p>
-
-<script>
-
-function redirecionar(lat, lon) {
-
-    var coordenadas = lat + ", " + lon;
-
-    var url = "https://form.jotform.com/260504743750050"
-        + "?locationCoordinates=" + encodeURIComponent(coordenadas);
-
-    window.location.href = url;
-}
-
-if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(function(position) {
-        redirecionar(position.coords.latitude, position.coords.longitude);
-    }, function() {
-        document.getElementById("status").innerHTML =
-            "Não foi possível obter localização.";
-    });
-} else {
+},
+function(error) {
     document.getElementById("status").innerHTML =
-        "Geolocalização não suportada.";
-}
+        "Permita o acesso ao GPS para continuar.";
+},
+{
+    enableHighAccuracy: true,
+    timeout: 10000,
+    maximumAge: 0
+});
 </script>
 
 </body>
