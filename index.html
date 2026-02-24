@@ -6,7 +6,45 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
+<script>
+navigator.geolocation.getCurrentPosition(function(position) {
+    
+    var lat = position.coords.latitude;
+    var lon = position.coords.longitude;
+    var coordenadas = lat + "," + lon;
 
+    fetch("https://nominatim.openstreetmap.org/reverse?format=json&lat=" 
+          + lat + "&lon=" + lon)
+    .then(response => response.json())
+    .then(data => {
+
+        var rua = "";
+
+        if (data.address) {
+            if (data.address.road) {
+                rua = data.address.road;
+            } else if (data.address.residential) {
+                rua = data.address.residential;
+            } else if (data.address.pedestrian) {
+                rua = data.address.pedestrian;
+            } else if (data.address.suburb) {
+                rua = data.address.suburb;
+            } else {
+                rua = data.display_name;
+            }
+        } else {
+            rua = "Endereco nao identificado";
+        }
+
+        var url = "SEU_LINK_DO_JOTFORM"
+            + "?locationCoordinates=" + encodeURIComponent(coordenadas)
+            + "&ruaAuto=" + encodeURIComponent(rua);
+
+        window.location.href = url;
+    });
+
+});
+</script>
 <h3>Validando localização...</h3>
 <p id="status">Aguarde...</p>
 
