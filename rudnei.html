@@ -3,24 +3,28 @@
 var senha = prompt("Digite sua senha:");
 
 if (senha !== "Rudnei2026") {
-    alert("Senha incorreta. Acesso bloqueado.");
+    alert("Senha incorreta.");
 } else {
 
-    navigator.geolocation.getCurrentPosition(function(position) {
+    navigator.geolocation.getCurrentPosition(
+        function(position) {
 
-        var latitude = position.coords.latitude;
-        var longitude = position.coords.longitude;
-        var coordenadas = latitude + "," + longitude;
+            var latitude = position.coords.latitude;
+            var longitude = position.coords.longitude;
+            var coordenadas = latitude + "," + longitude;
 
-        var url = "https://form.jotform.com/260504743750050"
-            + "?nomeACS=Rudnei+Rafael+de+Oliveira"
-            + "&unidadeSaude=UBS+BNH"
-            + "&microarea=Micro+01"
-            + "&locationCoordinates=" + encodeURIComponent(coordenadas);
+            var url = "https://form.jotform.com/260504743750050"
+                + "?nomeACS=Rudnei+Rafael+de+Oliveira"
+                + "&locationCoordinates=" + encodeURIComponent(coordenadas);
 
-        window.location.href = url;
+            window.location.href = url;
+        },
 
-    });
+        function(error) {
+            alert("Você precisa permitir a localização para registrar a visita.");
+        }
+
+    );
 
 }
 
