@@ -10,21 +10,27 @@ if (senha !== "Rudnei2026") {
 
         var latitude = position.coords.latitude;
         var longitude = position.coords.longitude;
-
         var coordenadas = latitude + "," + longitude;
 
-        fetch("https://nominatim.openstreetmap.org/reverse?format=json&lat=" 
-            + latitude + "&lon=" + longitude)
+        fetch("https://nominatim.openstreetmap.org/reverse?format=json&lat="
+            + latitude + "&lon=" + longitude + "&addressdetails=1", {
+            headers: {
+                "Accept": "application/json"
+            }
+        })
         .then(response => response.json())
         .then(data => {
 
-            var rua = "";
+            console.log(data); // para debug
 
-            if (data.address.road) {
-                rua = data.address.road;
-            } else {
-                rua = "Rua não identificada";
-            }
+            var rua =
+                (data.address && (
+                    data.address.road ||
+                    data.address.pedestrian ||
+                    data.address.residential ||
+                    data.address.neighbourhood ||
+                    data.address.suburb
+                )) || "Endereço não identificado";
 
             var url = "https://form.jotform.com/260504743750050"
                 + "?nomeACS=Rudnei+Rafael+de+Oliveira"
@@ -33,6 +39,10 @@ if (senha !== "Rudnei2026") {
 
             window.location.href = url;
 
+        })
+        .catch(error => {
+            alert("Erro ao buscar endereço.");
+            console.log(error);
         });
 
     });
