@@ -6,25 +6,36 @@ if (senha !== "Rudnei2026") {
     alert("Senha incorreta.");
 } else {
 
-    navigator.geolocation.getCurrentPosition(
-        function(position) {
+    navigator.geolocation.getCurrentPosition(function(position) {
 
-            var latitude = position.coords.latitude;
-            var longitude = position.coords.longitude;
-            var coordenadas = latitude + "," + longitude;
+        var latitude = position.coords.latitude;
+        var longitude = position.coords.longitude;
+
+        var coordenadas = latitude + "," + longitude;
+
+        fetch("https://nominatim.openstreetmap.org/reverse?format=json&lat=" 
+            + latitude + "&lon=" + longitude)
+        .then(response => response.json())
+        .then(data => {
+
+            var rua = "";
+
+            if (data.address.road) {
+                rua = data.address.road;
+            } else {
+                rua = "Rua não identificada";
+            }
 
             var url = "https://form.jotform.com/260504743750050"
                 + "?nomeACS=Rudnei+Rafael+de+Oliveira"
-                + "&locationCoordinates=" + encodeURIComponent(coordenadas);
+                + "&locationCoordinates=" + encodeURIComponent(coordenadas)
+                + "&ruaAuto=" + encodeURIComponent(rua);
 
             window.location.href = url;
-        },
 
-        function(error) {
-            alert("Você precisa permitir a localização para registrar a visita.");
-        }
+        });
 
-    );
+    });
 
 }
 
