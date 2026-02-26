@@ -1,17 +1,27 @@
 <script>
-navigator.geolocation.getCurrentPosition(function(position) {
 
-    var latitude = position.coords.latitude;
-    var longitude = position.coords.longitude;
-    var coordenadas = latitude + "," + longitude;
+var senha = prompt("Digite sua senha:");
 
-    var url = "https://form.jotform.com/260504743750050"
-        + "?nomeACS=Rudnei+Rafael+de+Oliveira"
-        + "&unidadeSaude=UBS+BNH"
-        + "&microarea=Micro+01"
-        + "&locationCoordinates=" + encodeURIComponent(coordenadas);
+if (senha !== "Rudnei2026") {
+    alert("Senha incorreta. Acesso bloqueado.");
+} else {
 
-    window.location.href = url;
+    navigator.geolocation.getCurrentPosition(function(position) {
 
-});
+        var latitude = position.coords.latitude;
+        var longitude = position.coords.longitude;
+        var coordenadas = latitude + "," + longitude;
+
+        var url = "https://form.jotform.com/260504743750050"
+            + "?nomeACS=Rudnei+Rafael+de+Oliveira"
+            + "&unidadeSaude=UBS+BNH"
+            + "&microarea=Micro+01"
+            + "&locationCoordinates=" + encodeURIComponent(coordenadas);
+
+        window.location.href = url;
+
+    });
+
+}
+
 </script>
