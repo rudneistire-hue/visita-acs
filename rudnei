@@ -1,0 +1,17 @@
+<script>
+navigator.geolocation.getCurrentPosition(function(position) {
+
+    var latitude = position.coords.latitude;
+    var longitude = position.coords.longitude;
+    var coordenadas = latitude + "," + longitude;
+
+    var url = "https://form.jotform.com/260504743750050"
+        + "?nomeACS=Rudnei+Rafael+de+Oliveira"
+        + "&unidadeSaude=UBS+BNH"
+        + "&microarea=Micro+01"
+        + "&locationCoordinates=" + encodeURIComponent(coordenadas);
+
+    window.location.href = url;
+
+});
+</script>
